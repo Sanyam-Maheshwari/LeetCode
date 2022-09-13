@@ -12,9 +12,7 @@ class Solution {
             else
             {
                 map.put(nums[i],i);
-            // result[1]=i;
-            // result[0]=map.get(target-nums[i]);
-            // return res;
+        
             }
         }
         return null;
