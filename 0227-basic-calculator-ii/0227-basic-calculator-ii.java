@@ -2,43 +2,47 @@ class Solution {
     public int calculate(String s) {
         if(s==null || s.length()==0)
             return 0;
-        Stack<Integer> stk=new Stack();
         int currNo=0;
         int ans=0;
         char sign='+';
+        int last=0;
         for(int i=0;i<s.length();i++)
         {
             if(Character.isDigit(s.charAt(i)))
             {
-                    currNo=currNo*10+(s.charAt(i)-'0');
+                currNo+=(s.charAt(i)-'0');
+                while(i+1<s.length() && Character.isDigit(s.charAt(i+1)))
+                {
+                    currNo=currNo*10+(s.charAt(i+1)-'0');
+                    i++;
+                }
             }
             if(!Character.isDigit(s.charAt(i)) && s.charAt(i)!=' ' || i==s.length()-1)
                {
                    if(sign=='+')
                    {
-                       stk.push(currNo);
+                       ans+=last;
+                       last=currNo;
                    }
                    else if(sign=='-')
                    {
-                       stk.push(-currNo);
+                       ans+=last;
+                       last=-currNo;
                    }
                    else if(sign=='*')
                    {
-                       stk.push(stk.pop()*currNo);
+                       last=last*currNo;
                    }
                     else if(sign=='/')
                    {
-                       stk.push(stk.pop()/currNo);
+                       last=last/currNo;
                    }
                    sign=s.charAt(i);  
                    currNo=0; 
                    
                }
         }
-               while(!stk.isEmpty())
-               {
-                   ans+=stk.pop();
-               }
+               ans+=last;
                return ans;
     }
 }
