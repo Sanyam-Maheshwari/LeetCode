@@ -1,37 +1,43 @@
-public class Solution {
-    static boolean[][] visited;
+class Solution {
     public boolean exist(char[][] board, String word) {
-        visited = new boolean[board.length][board[0].length];
         
-        for(int i = 0; i < board.length; i++){
-            for(int j = 0; j < board[i].length; j++){
-                if((word.charAt(0) == board[i][j]) && search(board, word, i, j, 0)){
-                    return true;
+        for(int i=0;i<board.length;i++)
+        {
+            for(int j=0;j<board[0].length;j++)
+            {
+                if(board[i][j]==word.charAt(0))
+                {
+                    boolean ans=ifPath(board, word, 0, i, j );
+                    if(ans==true)
+                        return true;
                 }
             }
         }
-        
         return false;
+       
     }
-    
-    private boolean search(char[][]board, String word, int i, int j, int index){
-        if(index == word.length()){
+    public static boolean ifPath(char [][]board, String word, int ind, int x, int y)
+    {
+        if(ind==word.length())
+        {
             return true;
         }
-        
-        if(i >= board.length || i < 0 || j >= board[i].length || j < 0 || board[i][j] != word.charAt(index) || visited[i][j]){
+        if(x>=board.length || x<0 || y>=board[0].length || y<0 || board[x][y]!=word.charAt(ind))
+        {
             return false;
         }
-        
-        visited[i][j] = true;
-        if(search(board, word, i-1, j, index+1) || 
-           search(board, word, i+1, j, index+1) ||
-           search(board, word, i, j-1, index+1) || 
-           search(board, word, i, j+1, index+1)){
-            return true;
+        int []movex={-1, 1, 0, 0};
+        int []movey={0, 0, -1, 1};
+        board[x][y]='*';
+        for(int j=0;j<4;j++)
+        {
+            boolean ans=ifPath(board, word, ind+1, x+movex[j], y+movey[j]);
+            if(ans==true)
+            {
+                return true;
+            }
         }
-        
-        visited[i][j] = false;
+        board[x][y]=word.charAt(ind);
         return false;
     }
 }
